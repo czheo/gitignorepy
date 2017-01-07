@@ -10,7 +10,7 @@ requests.packages.urllib3.disable_warnings()
 
 tmpdir = tempfile.gettempdir()
 m = hashlib.md5()
-m.update('gitignore')
+m.update('gitignore'.encode('utf8'))
 cache_file = os.path.join(tmpdir, m.hexdigest())
 requests_cache.install_cache(cache_file, expire_after=60*60)
 
