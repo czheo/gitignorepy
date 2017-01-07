@@ -5,13 +5,15 @@ import requests
 import requests_cache
 import tempfile
 import os
+import sys
 import hashlib
 import requests.packages.urllib3
 requests.packages.urllib3.disable_warnings()
 
 tmpdir = tempfile.gettempdir()
 m = hashlib.md5()
-m.update('gitignore'.encode('utf8'))
+k = 'gitignorepy%d%d' % (sys.version_info.major, sys.version_info.minor)
+m.update(k.encode('utf8'))
 cache_file = os.path.join(tmpdir, m.hexdigest())
 requests_cache.install_cache(cache_file, expire_after=60*60)
 
