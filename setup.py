@@ -13,9 +13,6 @@ setup(
     packages=[
         'gitignore'
     ],
-    package_data={
-        'gitignore': ['data/*']
-    },
     install_requires=[
         'requests',
         'requests_cache',

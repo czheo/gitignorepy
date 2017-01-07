@@ -1,19 +1,29 @@
+from __future__ import print_function
 import argparse
 import requests
 import requests_cache
+import tempfile
 import os
-requests_cache.install_cache(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data/cache'), expire_after=60*60)
+import hashlib
+import requests.packages.urllib3
+requests.packages.urllib3.disable_warnings()
+
+tmpdir = tempfile.gettempdir()
+m = hashlib.md5()
+m.update('gitignore')
+cache_file = os.path.join(tmpdir, m.hexdigest())
+requests_cache.install_cache(cache_file, expire_after=60*60)
 
 
 def fetch(keyword):
     lst = get_list(keyword)
     exact_match = [x for x in lst if x['name'].lower() == keyword.lower()]
     if len(exact_match) > 0:
-        print(requests.get(exact_match[0]['download_url']).text, end='')
+        print(requests.get(exact_match[0]['download_url'], verify=False).text, end='')
     elif len(lst) == 0:
         print('Template not found:', keyword)
     elif len(lst) == 1:
-        print(requests.get(lst[0]['download_url']).text, end='')
+        print(requests.get(lst[0]['download_url'], verify=False).text, end='')
     else:
         print('Ambiguous keyword:', keyword)
         _print_list(lst)
@@ -26,7 +36,7 @@ def get_list(keyword):
 
 
 def _fetch_list(url):
-    lst = requests.get(url).json()
+    lst = requests.get(url, verify=False).json()
     return [x for x in lst if x['type'] == 'file' and not x['name'].startswith('.')]
 
 
@@ -45,6 +55,8 @@ def main():
     # list
     parser_list = subparsers.add_parser('list', help='list available gitignore files')
     parser_list.add_argument('keyword', default='', nargs='?')
+    # clear_cache
+    parser_cc = subparsers.add_parser('clear_cache', help='clear cache')
 
     args = parser.parse_args()
     if args.command:
@@ -52,5 +64,7 @@ def main():
             fetch(args.keyword)
         elif args.command == 'list':
             _print_list(get_list(args.keyword))
+        elif args.command == 'clear_cache':
+            os.remove(cache_file + '.sqlite')
     else:
         parser.print_help()
