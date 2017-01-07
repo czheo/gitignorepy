@@ -1,5 +1,5 @@
 # gitignorepy
-fetch gitignore file from Github.com
+fetch gitignore file from https://github.com/github/gitignore
 
 # Install
 
