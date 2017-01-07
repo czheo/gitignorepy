@@ -1,1 +1,0 @@
-from .gitignore import main

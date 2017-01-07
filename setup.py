@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="gitignore",
+    name="gitignorepy",
     version="0.0.1",
     description="fetch gitignore files from github",
     author="czheo",
@@ -9,9 +9,6 @@ setup(
     keywords="git github gitignore",
     scripts=[
         'bin/gg'
-    ],
-    packages=[
-        'gitignore'
     ],
     install_requires=[
         'requests',
