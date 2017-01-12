@@ -20,7 +20,7 @@ requests_cache.install_cache(cache_file, expire_after=60*60)
 
 def fetch(keyword):
     lst = get_list(keyword)
-    exact_match = [x for x in lst if x['name'].lower() == keyword.lower()]
+    exact_match = [x for x in lst if x['name'].replace('.gitignore', '').lower() == keyword.lower()]
     if len(exact_match) > 0:
         print(requests.get(exact_match[0]['download_url'], verify=False).text, end='')
     elif len(lst) == 0:
