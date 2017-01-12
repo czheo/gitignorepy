@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="gitignorepy",
-    version="0.2.0",
+    version="0.3.0",
     description="fetch gitignore files from github",
     url='https://github.com/czheo/gitignorepy/',
     author="czheo",
